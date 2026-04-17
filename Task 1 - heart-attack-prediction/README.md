@@ -1,4 +1,4 @@
-# ❤️ Heart Attack Prediction باستخدام Machine Learning
+# ❤️ Heart Attack Prediction Machine Learning
 
 ## 📌 Project Overview
 
