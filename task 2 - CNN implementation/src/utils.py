@@ -13,12 +13,13 @@ def download_dataset():
             "-d",
             "andrewmvd/lung-and-colon-cancer-histopathological-images",
         ]
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        # Keep stdout/stderr attached so Kaggle CLI progress is visible.
+        result = subprocess.run(cmd, text=True)
 
         if result.returncode != 0:
             raise RuntimeError(
                 "Dataset download failed. Ensure Kaggle API is configured with kaggle.json.\n"
-                + result.stderr
+                "Also verify internet access and Kaggle credentials."
             )
 
         os.makedirs("data", exist_ok=True)
