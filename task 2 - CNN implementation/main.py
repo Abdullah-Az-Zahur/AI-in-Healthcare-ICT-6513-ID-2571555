@@ -1,45 +1,92 @@
 import torch
+import matplotlib.pyplot as plt
+import seaborn as sns
+import random
+
 from src.model import CNN
-from src.data import get_loader
+from src.data import get_loaders
 from src.train import train
+from src.eval import evaluate
 
 import torch.nn as nn
 import torch.optim as optim
+from sklearn.metrics import confusion_matrix
 
-# 👉 GPU / CPU toggle (OPTIONAL)
-USE_GPU = True   # চাইলে False করে দিতে পারো
-
-device = torch.device("cuda" if torch.cuda.is_available() and USE_GPU else "cpu")
+# ✅ Device
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Using device:", device)
 
-# Model
+# ✅ Data
+train_loader, val_loader = get_loaders()
+
+# ✅ Model
 model = CNN().to(device)
 
-# Data
-loader = get_loader()
-
-# Loss + Optimizer
+# ✅ Training setup
 loss_fn = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 losses = []
 
+# ✅ Training
 for epoch in range(3):
-    total_loss = 0
+    loss = train(model, train_loader, loss_fn, optimizer, device)
+    losses.append(loss)
+    print(f"Epoch {epoch}: Loss = {loss}")
 
-    for x, y in loader:
-        x, y = x.to(device), y.to(device)   # 🔥 GPU move
+# ✅ Evaluation
+metrics, y_true, y_pred = evaluate(model, val_loader, device)
 
-        out = model(x)
-        loss = loss_fn(out, y)
+print("\nMetrics:")
+for k, v in metrics.items():
+    print(f"{k}: {v:.4f}")
 
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
+# =========================
+# 📊 VISUALIZATION START
+# =========================
 
-        total_loss += loss.item()
+# 🔹 1. Loss Graph
+plt.figure()
+plt.plot(losses, marker='o')
+plt.title("Training Loss")
+plt.xlabel("Epoch")
+plt.ylabel("Loss")
+plt.grid()
+plt.show()
 
-    avg_loss = total_loss / len(loader)
-    losses.append(avg_loss)
+# 🔹 2. Metrics Bar Chart
+names = list(metrics.keys())
+values = list(metrics.values())
 
-    print(f"Epoch {epoch}: Loss = {avg_loss}")
+plt.figure()
+plt.bar(names, values)
+plt.title("Evaluation Metrics")
+plt.ylim(0,1)
+plt.grid(axis='y')
+plt.show()
+
+# 🔹 3. Confusion Matrix
+cm = confusion_matrix(y_true, y_pred)
+
+plt.figure()
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.title("Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
+
+# 🔹 4. Sample Prediction Image
+data_iter = iter(val_loader)
+images, labels = next(data_iter)
+
+img = images[0].to(device)
+label = labels[0].item()
+
+output = model(img.unsqueeze(0))
+_, pred = torch.max(output, 1)
+
+plt.figure()
+plt.imshow(img.cpu().permute(1,2,0))
+plt.title(f"Actual: {label} | Predicted: {pred.item()}")
+plt.axis('off')
+plt.show()
