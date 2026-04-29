@@ -1,0 +1,92 @@
+import torch
+import matplotlib.pyplot as plt
+import seaborn as sns
+import random
+
+from src.model import CNN
+from src.data import get_loaders
+from src.train import train
+from src.eval import evaluate
+
+import torch.nn as nn
+import torch.optim as optim
+from sklearn.metrics import confusion_matrix
+
+# ✅ Device
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("Using device:", device)
+
+# ✅ Data
+train_loader, val_loader = get_loaders()
+
+# ✅ Model
+model = CNN().to(device)
+
+# ✅ Training setup
+loss_fn = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+losses = []
+
+# ✅ Training
+for epoch in range(3):
+    loss = train(model, train_loader, loss_fn, optimizer, device)
+    losses.append(loss)
+    print(f"Epoch {epoch}: Loss = {loss}")
+
+# ✅ Evaluation
+metrics, y_true, y_pred = evaluate(model, val_loader, device)
+
+print("\nMetrics:")
+for k, v in metrics.items():
+    print(f"{k}: {v:.4f}")
+
+# =========================
+# 📊 VISUALIZATION START
+# =========================
+
+# 🔹 1. Loss Graph
+plt.figure()
+plt.plot(losses, marker='o')
+plt.title("Training Loss")
+plt.xlabel("Epoch")
+plt.ylabel("Loss")
+plt.grid()
+plt.show()
+
+# 🔹 2. Metrics Bar Chart
+names = list(metrics.keys())
+values = list(metrics.values())
+
+plt.figure()
+plt.bar(names, values)
+plt.title("Evaluation Metrics")
+plt.ylim(0,1)
+plt.grid(axis='y')
+plt.show()
+
+# 🔹 3. Confusion Matrix
+cm = confusion_matrix(y_true, y_pred)
+
+plt.figure()
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.title("Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
+
+# 🔹 4. Sample Prediction Image
+data_iter = iter(val_loader)
+images, labels = next(data_iter)
+
+img = images[0].to(device)
+label = labels[0].item()
+
+output = model(img.unsqueeze(0))
+_, pred = torch.max(output, 1)
+
+plt.figure()
+plt.imshow(img.cpu().permute(1,2,0))
+plt.title(f"Actual: {label} | Predicted: {pred.item()}")
+plt.axis('off')
+plt.show()
