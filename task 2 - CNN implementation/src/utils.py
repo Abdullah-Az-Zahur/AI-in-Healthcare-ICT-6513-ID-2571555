@@ -1,4 +1,6 @@
 import os
+import subprocess
+import zipfile
 
 def download_dataset():
     if not os.path.exists("data"):
