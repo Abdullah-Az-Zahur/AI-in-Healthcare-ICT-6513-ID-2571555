@@ -1,4 +1,3 @@
-import os
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
 from src.utils import download_dataset
@@ -12,8 +11,7 @@ def get_loaders():
         transforms.ToTensor(),
     ])
 
-    image_root = _resolve_image_root("data")
-    dataset = datasets.ImageFolder(image_root, transform=transform)
+    dataset = datasets.ImageFolder("data", transform=transform)
 
     train_size = int(0.8 * len(dataset))
     val_size = len(dataset) - train_size
