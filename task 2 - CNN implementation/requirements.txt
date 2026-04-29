@@ -1,6 +1,6 @@
 torch
 torchvision
 matplotlib
+seaborn
 scikit-learn
-tqdm
-Pillow
+kaggle
