@@ -206,6 +206,40 @@ scikit-learn       - Machine learning metrics
 kaggle             - Kaggle API client
 ```
 
+## 🧩 Code Update & How to Re-run
+
+- **Where to edit:** Open `main.py` to change training behaviour and parameters.
+- **Common editable parameters:**
+   - `subset_size` — fraction or number of samples used for quick runs (default in script: `int(0.15 * len(full_dataset))`).
+   - `train_loader` / `batch_size` — adjust batch size in the DataLoader creation.
+   - `optimizer` / `lr` — learning rate set when instantiating the optimizer.
+   - `num_epochs` — the script currently runs a single epoch; wrap the training loop in an epoch loop to increase epochs.
+
+- **Save result plot instead of showing it interactively:** locate the plotting code at the end of `main.py` and replace or add the following lines to save the figure to `assets/result.png`:
+
+```python
+# after plotting code (replace plt.show())
+plt.tight_layout()
+plt.savefig('assets/result.png', dpi=200)
+plt.close()
+```
+
+- **Quick commands to re-run the project:**
+
+```powershell
+# activate virtualenv (Windows)
+.venv\Scripts\activate
+
+# (re)install deps if needed
+pip install -r requirements.txt
+
+# run the training/evaluation script
+python main.py
+```
+
+- **Tip for iterative development:** change `subset_size` and `num_epochs` for fast local experiments, then switch to full dataset and more epochs for final runs.
+
+
 ## ⚠️ Troubleshooting
 
 ### "Dataset not found" Error
