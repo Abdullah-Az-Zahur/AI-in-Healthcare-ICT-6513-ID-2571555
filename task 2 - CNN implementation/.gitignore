@@ -91,7 +91,7 @@ dmypy.json
 site-packages/
 
 # Large datasets
-data/
+lung_colon_image_set/
 *.zip
 *.tar
 *.gz
