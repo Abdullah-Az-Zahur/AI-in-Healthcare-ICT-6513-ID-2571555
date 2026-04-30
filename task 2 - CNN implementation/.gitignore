@@ -89,3 +89,17 @@ dmypy.json
 
 # Locally installed dependencies
 site-packages/
+
+# Large datasets
+data/
+*.zip
+*.tar
+*.gz
+
+# Kaggle downloads
+*.kaggle
+kaggle.json
+
+# Model checkpoints (future)
+*.pt
+*.pth

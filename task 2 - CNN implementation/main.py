@@ -7,6 +7,7 @@ from src.model import CNN
 from src.data import get_loaders
 from src.train import train
 from src.eval import evaluate
+from src.config import EPOCHS
 
 import torch.nn as nn
 import torch.optim as optim
@@ -29,7 +30,7 @@ optimizer = optim.Adam(model.parameters(), lr=0.001)
 losses = []
 
 # ✅ Training
-for epoch in range(3):
+for epoch in range(EPOCHS):
     loss = train(model, train_loader, loss_fn, optimizer, device)
     losses.append(loss)
     print(f"Epoch {epoch}: Loss = {loss}")

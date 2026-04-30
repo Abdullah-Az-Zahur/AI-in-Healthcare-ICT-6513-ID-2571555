@@ -1,4 +1,5 @@
 import torch.nn as nn
+from src.config import NUM_CLASSES
 
 class CNN(nn.Module):
     def __init__(self):
@@ -18,7 +19,7 @@ class CNN(nn.Module):
             nn.Flatten(),
             nn.Linear(64 * 56 * 56, 128),
             nn.ReLU(),
-            nn.Linear(128, 3)
+            nn.Linear(128, NUM_CLASSES)
         )
 
     def forward(self, x):

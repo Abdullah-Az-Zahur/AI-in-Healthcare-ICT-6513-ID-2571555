@@ -1,3 +1,4 @@
+import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
 from src.utils import download_dataset
@@ -18,7 +19,9 @@ def get_loaders():
 
     train_data, val_data = random_split(dataset, [train_size, val_size])
 
-    train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True)
-    val_loader = DataLoader(val_data, batch_size=BATCH_SIZE)
+    generator=torch.Generator().manual_seed(42)
+
+    train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True, generator=generator)
+    val_loader = DataLoader(val_data, batch_size=BATCH_SIZE, generator=generator)
 
     return train_loader, val_loader
