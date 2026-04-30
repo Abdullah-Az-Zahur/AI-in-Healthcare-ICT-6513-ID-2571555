@@ -1,8 +1,8 @@
-# Lung Cancer Detection using CNN (ResNet18)
+# Lung & Colon Cancer Detection using Custom CNN
 
 ## 📋 Project Overview
 
-This project implements a **Convolutional Neural Network (CNN)** using **ResNet18** architecture to detect lung cancer from histopathological images. The model achieves **91% accuracy** in classifying lung tissue samples as cancerous (Adenocarcinoma, Squamous Cell Carcinoma) or normal.
+This project implements a **Custom Convolutional Neural Network (CNN)** from scratch to detect lung and colon cancer from histopathological images. The model classifies tissue samples as cancerous (Adenocarcinoma, Squamous Cell Carcinoma) or normal using a lightweight, efficient architecture optimized for medical image classification.
 
 ## 🎯 Objectives
 
@@ -13,14 +13,16 @@ This project implements a **Convolutional Neural Network (CNN)** using **ResNet1
 
 ## 📊 Model Performance
 
-The trained ResNet18 model achieves the following metrics on the test dataset:
+The trained Custom CNN model produces performance metrics on the test dataset:
 
 | Metric | Score |
 |--------|-------|
-| **Accuracy** | 0.91 |
-| **Precision** | 0.92 |
-| **Recall** | 0.91 |
-| **F1-Score** | 0.91 |
+| **Accuracy** | Variable* |
+| **Precision** | Variable* |
+| **Recall** | Variable* |
+| **F1-Score** | Variable* |
+
+*Performance depends on training epochs, data subset used, and hardware capabilities. Results are displayed after training completion.
 
 ![Results](assets/result.png)
 
@@ -100,13 +102,19 @@ The script will:
 - **Image Categories:**
   - Lung: Adenocarcinoma (ACA), Normal (N), Squamous Cell Carcinoma (SCC)
   - Colon: Adenocarcinoma (ACA), Normal (N)
-- **Image Size:** 768×768 pixels (resized to 128×128 for processing)
+- **Image Size:** 768× (CustomLungCNN)
 
-### Model Architecture
+**Custom CNN with 3 Convolutional Blocks:**
 
-- **Base Model:** ResNet18 (Pre-trained on ImageNet)
-- **Transfer Learning:** Yes (using pre-trained weights)
-- **Output Layer:** Fully connected layer adapted to number of classes
+- **Block 1:** Conv2d(3→32, 3×3) → BatchNorm → ReLU → MaxPool(2×2)
+- **Block 2:** Conv2d(32→64, 3×3) → BatchNorm → ReLU → MaxPool(2×2)
+- **Block 3:** Conv2d(64→128, 3×3) → BatchNorm → ReLU → MaxPool(2×2)
+- **Fully Connected Layers:** 
+  - FC1: 128×16×16 → 512 neurons (ReLU + Dropout)
+  - FC2: 512 → Number of Classes
+- **Regularization:**Standard normalization (mean: [0.5, 0.5, 0.5], std: [0.5, 0.5, 0.5])
+- **Train-Test Split:** 80-20 ratio
+- **Data Subset:** 100% of dataset used (configurable via CONFIG["subset_fraction"]
 - **Device:** GPU (CUDA) if available, otherwise CPU
 
 ### Data Preprocessing
@@ -116,16 +124,19 @@ The script will:
 - **Train-Test Split:** 80-20 ratio
 - **Data Subset:** 15% of full dataset used for faster training (modify in code for full training)
 
-### Training Configuration
+### Training0 |
+| Dropout Rate | 0.3 |
+| Device | GPU/CPU (auto-detect) |
 
+*All parameters can be modified in the CONFIG dictionary at the top of main.py*
 | Parameter | Value |
 |-----------|-------|
 | Batch Size | 32 |
 | Learning Rate | 0.001 |
-| Optimizer | Adam |
-| Loss Function | Cross Entropy Loss |
-| Epochs | 1 (quick demo) |
-| Device | GPU/CPU (auto-detect) |
+| Optimizer | Adam |CustomLungCNN with configurable number of classes
+4. **Training Loop**: Train the model using Adam optimizer and Cross Entropy Loss
+5. **Evaluation**: Evaluate on test set and compute metrics (Accuracy, Precision, Recall, F1)
+6. **Visualization**: Generate bar chart showing performance metrics with actual score
 
 ## 📈 Implementation Steps
 
@@ -134,53 +145,55 @@ The `main.py` script follows these steps:
 1. **Dataset Preparation**: Download and extract lung/colon cancer images from Kaggle
 2. **Data Loading**: Load images with PyTorch DataLoader and apply transformations
 3. **Model Creation**: Initialize ResNet18 with pre-trained weights and modify final layer
-4. **Training**: Train the model on the training dataset
-5. **Evaluation**: Evaluate on test set and compute metrics (Accuracy, Precision, Recall, F1)
-6. **Visualization**: Generate bar chart showing performance metrics
+4.Flexible subset sampling for experimentation
 
-## 🔑 Key Features
-
-✨ **Automated Dataset Management**
-- Automatic download from Kaggle
-- Intelligent extraction and preprocessing
-- Subset sampling for faster iteration
-
-🧠 **Transfer Learning**
-- Uses pre-trained ResNet18 weights
-- Efficient training with reduced computational time
-- High accuracy with limited data
+🧠 **Custom CNN Architecture**
+- Lightweight and efficient design
+- 3 convolutional blocks with progressive channel expansion (32→64→128)
+- Batch normalization for training stability
+- Dropout regularization to prevent overfitting
 
 📊 **Comprehensive Evaluation**
-- Multiple performance metrics
-- Visual result dashboard
+- Multiple performance metrics (Accuracy, Precision, Recall, F1-Score)
+- Visual result dashboard with metric visualization
 - Weighted average for multi-class classification
+- Per-class performance tracking
 
 💻 **Hardware Optimization**
 - Automatic GPU/CPU detection
 - Efficient batch processing
 - Memory-optimized data loading
-
-## 🛠️ Customization
-
-### Modify Training Parameters
-
-Edit `main.py` to adjust:
+- Fast training on both CPU and GPU
+📊 **Comprehensive Evaluation**
+- Multiple performance metrics
+- Visthe `CONFIG` dictionary at the top of `main.py` to adjust:
 
 ```python
-# Change batch size
-batch_size = 64  # (line 61)
-
-# Change learning rate
-lr = 0.0005  # (line 95)
-
-# Use full dataset instead of subset
-subset_size = len(full_dataset)  # (line 58)
-
-# Increase training epochs
-num_epochs = 5  # Add loop around line 99
+CONFIG = {
+    "img_size": 128,           # Image dimensions (adjust for memory/accuracy trade-off)
+    "batch_size": 32,          # Batch size (increase for faster training, needs more VRAM)
+    "learning_rate": 0.001,    # Learning rate (lower = slower but potentially better)
+    "epochs": 10,              # Number of training epochs
+    "subset_fraction": 1.0,    # 0.0-1.0: fraction of dataset to use
+    "train_split": 0.8,        # 0.0-1.0: ratio for train/test split
+    "dropout_rate": 0.3,       # Dropout strength (higher = more regularization)
+}
 ```
 
-### Use Different Model Architecture
+### Extend the Custom CNN
+
+Modify the `CustomLungCNN` class to add more layers or depth:
+
+```python
+# Add more convolutional blocks
+self.conv4 = nn.Conv2d(128, 256, kernel_size=3, padding=1)
+self.bn4 = nn.BatchNorm2d(256)
+
+# Add additional pooling in forward pass
+x = self.pool(F.relu(self.bn4(self.conv4(x))))
+
+# Adjust fully connected layers accordingly
+self.fc1 = nn.Linear(256 * 8 * 8, 1024)  # Adjust input size
 
 Replace ResNet18 with other architectures:
 
