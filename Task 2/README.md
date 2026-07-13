@@ -25,6 +25,22 @@ This project implements an end-to-end machine learning pipeline for the Breast C
 - `model_comparison_matrix.png` - Accuracy, F1-score, and ROC-AUC comparison
 - `confusion_matrix_best_model.png` - Confusion matrix for the best model
 
+## Results
+
+If the PNG files are committed to the repository, GitHub will render them below.
+
+### Hyperparameter Impact Plot
+
+![Hyperparameter Impact Plot](hyperparameter_impact.png)
+
+### Model Comparison Matrix
+
+![Model Comparison Matrix](model_comparison_matrix.png)
+
+### Confusion Matrix Heatmap
+
+![Confusion Matrix Heatmap](confusion_matrix_best_model.png)
+
 ## Requirements
 
 Install the following Python packages if they are not already available in your environment:
