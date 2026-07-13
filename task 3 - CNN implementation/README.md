@@ -36,13 +36,17 @@ The CNN contains:
 - A fully connected hidden layer
 - A single sigmoid output node for binary classification
 
-## Outputs
+## Result Preview
 
-After training, the script saves these files:
+GitHub will render the generated figures below directly from the `assets/` folder:
 
-- `assets/learning_curves.png`
-- `assets/roc_curve.png`
-- `assets/confusion_matrix.png`
+![Learning Curves](assets/learning_curves.png)
+
+![ROC Curve](assets/roc_curve.png)
+
+![Confusion Matrix](assets/confusion_matrix.png)
+
+If you want a single compact preview image, you can also use `assets/result.png`.
 
 ## Running the project
 
