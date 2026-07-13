@@ -1,39 +1,29 @@
-# ❤️ Heart Attack Prediction Machine Learning
+# Comparative Analysis of ML Classifiers for Medical Diagnosis
 
 ## 📌 Project Overview
 
-This project is developed as part of the course **ICT 6513 – AI in Healthcare**. The main objective is to predict the likelihood of heart disease (heart attack risk) using machine learning techniques based on clinical health data.
+This project demonstrates an end-to-end machine learning workflow for medical diagnosis using the **Breast Cancer Wisconsin (Diagnostic)** dataset from scikit-learn.
 
-The model analyzes various health-related features such as age, cholesterol level, blood pressure, and maximum heart rate to determine whether a patient is at risk.
+It covers data engineering, preprocessing, feature scaling, model training, and visual evaluation.
 
 ---
 
 ## 🎯 Objectives
 
-* Predict heart disease presence (Yes/No)
-* Analyze important health factors affecting heart disease
-* Visualize model performance using graphs
+* Convert the raw dataset into a Pandas DataFrame with proper feature names
+* Check for missing values
+* Scale features using StandardScaler
+* Identify the top 5 features correlated with the target
+* Train and compare three classifiers
+* Visualize model performance with Matplotlib
 
 ---
 
 ## 📊 Dataset
 
-The dataset contains the following features:
+The project uses the built-in scikit-learn Breast Cancer Wisconsin dataset.
 
-* age – Age of the patient
-* sex – Gender
-* cp – Chest pain type
-* trestbps – Resting blood pressure
-* chol – Cholesterol level
-* fbs – Fasting blood sugar
-* restecg – Resting ECG results
-* thalach – Maximum heart rate achieved
-* exang – Exercise-induced angina
-* oldpeak – ST depression
-* slope – Slope of ST segment
-* ca – Number of major vessels
-* thal – Thalassemia
-* target – Heart disease (0 = No, 1 = Yes)
+The target variable indicates whether the tumor is malignant or benign.
 
 ---
 
@@ -41,7 +31,6 @@ The dataset contains the following features:
 
 * Python
 * Pandas
-* NumPy
 * Scikit-learn
 * Matplotlib
 
@@ -49,10 +38,11 @@ The dataset contains the following features:
 
 ## 🤖 Machine Learning Model
 
-* Algorithm: **Logistic Regression**
-* Type: Classification
+The script trains and compares three classifiers:
 
-The model is trained to classify whether a patient has heart disease or not.
+* Logistic Regression
+* Random Forest Classifier
+* Support Vector Machine (SVM)
 
 ---
 
@@ -61,9 +51,11 @@ The model is trained to classify whether a patient has heart disease or not.
 The model performance is evaluated using:
 
 * Accuracy Score
+* Precision Score
+* Recall Score
 * Confusion Matrix
 * ROC Curve (AUC)
-* Feature Importance Visualization
+* Correlation-based feature analysis
 
 ---
 
@@ -71,10 +63,10 @@ The model performance is evaluated using:
 
 A dashboard-style visualization is implemented using Matplotlib, including:
 
-* Confusion Matrix
-* Accuracy Bar Chart
-* Feature Importance Graph
-* ROC Curve
+* Model comparison bar chart
+* Confusion matrix heatmap for the best model
+* ROC curves
+* Top 5 correlated features
 
 ---
 
@@ -83,7 +75,7 @@ A dashboard-style visualization is implemented using Matplotlib, including:
 ### 1. Clone Repository
 
 ```
-git clone https://github.com/Abdullah-Az-Zahur/heart-attack-prediction
+git clone <your-repository-url>
 cd heart-attack-prediction
 ```
 
@@ -110,7 +102,7 @@ source venv/bin/activate
 ### 4. Install Dependencies
 
 ```
-pip install pandas numpy matplotlib scikit-learn
+pip install pandas matplotlib scikit-learn
 ```
 
 ### 5. Run the Project
@@ -123,7 +115,19 @@ python main.py
 
 ## 📌 Results
 
-The model successfully predicts heart disease with good accuracy. The dashboard provides a clear visualization of model performance and feature impact.
+The script prints the missing-value check, top correlated features, and a comparison table for the three models. It also renders the required plots.
+
+### Result Images
+
+![Model Comparison](results/model_comparison.png)
+
+![Confusion Matrix](results/confusion_matrix.png)
+
+![ROC Curves](results/roc_curves.png)
+
+![Top Correlated Features](results/top_correlated_features.png)
+
+![Full Dashboard](results/dashboard.png)
 
 ---
 
@@ -131,7 +135,7 @@ The model successfully predicts heart disease with good accuracy. The dashboard 
 
 This type of machine learning model can assist healthcare professionals in:
 
-* Early detection of heart disease
+* Early detection of disease patterns
 * Risk assessment of patients
 * Supporting clinical decision-making
 
@@ -143,12 +147,6 @@ This project was completed as part of academic coursework under **ICT 6513 – A
 
 ---
 
-## 📧 Author
+## 📧 Submission
 
-**Md. Abdullah Az-Zahur**
-
----
-
-## ⭐ If you like this project
-
-Give it a star on GitHub ⭐
+For assignment submission, export the notebook or include the Python script together with the generated figures if needed.
